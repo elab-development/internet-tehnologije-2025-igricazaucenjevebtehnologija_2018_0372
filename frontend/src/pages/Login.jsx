@@ -1,36 +1,57 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BugButton from "../components/Button";
+import { loginUser } from "../api";
+import Button from "../components/Button";
 
 export default function Login({ setUser }) {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const fakeUser = { username, role: "hunter" };
-    localStorage.setItem("user", JSON.stringify(fakeUser));
-    setUser(fakeUser);
-    navigate("/challenges");
+    setError(null);
+
+    try {
+      const data = await loginUser(email, password);
+      
+      
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      
+      setUser(data.user);
+
+      
+      navigate("/challenges");
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
     <div className="max-w-md mx-auto mt-20 p-8 bg-white rounded-2xl shadow-xl border border-slate-100">
-      <h2 className="text-3xl font-bold mb-6 italic">Welcome Back!</h2>
+      <h2 className="text-3xl font-bold mb-6">Login</h2>
+      {error && <p className="text-rose-500 mb-4 font-medium">{error}</p>}
       <form onSubmit={handleLogin} className="space-y-4">
         <input 
+          type="email"
           required
-          className="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none"
-          placeholder="Enter Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          className="w-full p-3 rounded-lg border border-slate-300 outline-none focus:ring-2 focus:ring-indigo-500"
+          placeholder="Email Address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input 
           type="password"
-          className="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none"
+          required
+          className="w-full p-3 rounded-lg border border-slate-300 outline-none focus:ring-2 focus:ring-indigo-500"
           placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <BugButton className="w-full">Sign In</BugButton>
+        <Button type="submit" className="w-full">Sign In</Button>
       </form>
     </div>
   );

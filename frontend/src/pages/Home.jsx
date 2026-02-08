@@ -1,4 +1,4 @@
-import BugButton from "../components/Button";
+import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
       <p className="text-lg text-slate-600 max-w-2xl mb-8">
         We give you the broken code. You find the bug. Prove you're a senior developer by squashing bugs in our gallery.
       </p>
-      <BugButton onClick={() => navigate("/challenges")}>Start Hunting</BugButton>
+      <Button onClick={() => navigate("/challenges")}>Start Hunting</Button>
     </div>
   );
 }

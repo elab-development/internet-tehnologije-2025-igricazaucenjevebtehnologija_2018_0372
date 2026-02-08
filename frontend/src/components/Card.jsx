@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function ChallengeCard({ challenge }) {
+export default function Card({ challenge }) {
   return (
     <div className="bg-white border border-slate-200 p-5 rounded-xl shadow-sm hover:shadow-md transition">
       <div className="flex justify-between items-start mb-3">
