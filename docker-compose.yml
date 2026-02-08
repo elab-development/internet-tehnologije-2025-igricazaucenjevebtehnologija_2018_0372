@@ -1,17 +1,50 @@
-version: '3.9'
+version: '3.8'
 
 services:
-  postgres:
-  image: postgres:17
-  container_name: bughunt-postgres
-  environment:
-    POSTGRES_USER: bughunt
-    POSTGRES_PASSWORD: bughunt123
-    POSTGRES_DB: bughunt_db
-  ports:
-    - "5432:5432"
-  volumes:
-    - pgdata:/var/lib/postgresql/data
+  # 1. The Database
+  db:
+    image: postgres:15
+    container_name: bughunt_db
+    restart: always
+    environment:
+      POSTGRES_USER: bughunt
+      POSTGRES_PASSWORD: bughunt123
+      POSTGRES_DB: bughunt_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # 2. The Backend (Express + Drizzle)
+  backend:
+    build: ./backend
+    container_name: bughunt_backend
+    ports:
+      - "5000:5000"
+    environment:
+      # NOTE: We use 'db' as the hostname because Docker maps service names to IPs
+      DB_URL: postgres://bughunt:bughunt123@db:5432/bughunt_db
+      JWT_SECRET: your_super_secret_key_123
+      PORT: 5000
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  # 3. The Frontend (React + Vite)
+  frontend:
+    build: ./frontend
+    container_name: bughunt_frontend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:5000/api
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
 
 volumes:
   pgdata:
