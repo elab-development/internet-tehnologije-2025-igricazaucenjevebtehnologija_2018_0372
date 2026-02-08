@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"; // Hook #3: useEffect
+import { useEffect, useState } from "react";
 import ChallengeCard from "../components/Card";
 
 export default function Challenges() {
