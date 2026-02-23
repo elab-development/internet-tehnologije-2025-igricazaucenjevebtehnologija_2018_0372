@@ -3,6 +3,7 @@ import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Register from "./pages/Register"
 import Challenges from "./pages/Challenges";
 
 export default function App() {
@@ -14,6 +15,7 @@ return (
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
+        <Route path="/register" element={<Register />} />
         <Route 
           path="/challenges" 
           element={user ? <Challenges /> : <Navigate to="/login" />} 

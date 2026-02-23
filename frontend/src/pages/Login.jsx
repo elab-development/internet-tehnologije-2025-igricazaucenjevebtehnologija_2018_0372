@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../api";
 import Button from "../components/Button";
 
@@ -15,15 +15,15 @@ export default function Login({ setUser }) {
 
     try {
       const data = await loginUser(email, password);
-      
-      
+
+
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      
+
       setUser(data.user);
 
-      
+
       navigate("/challenges");
     } catch (err) {
       setError(err.message);
@@ -35,7 +35,7 @@ export default function Login({ setUser }) {
       <h2 className="text-3xl font-bold mb-6">Login</h2>
       {error && <p className="text-rose-500 mb-4 font-medium">{error}</p>}
       <form onSubmit={handleLogin} className="space-y-4">
-        <input 
+        <input
           type="email"
           required
           className="w-full p-3 rounded-lg border border-slate-300 outline-none focus:ring-2 focus:ring-indigo-500"
@@ -43,7 +43,7 @@ export default function Login({ setUser }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input 
+        <input
           type="password"
           required
           className="w-full p-3 rounded-lg border border-slate-300 outline-none focus:ring-2 focus:ring-indigo-500"
@@ -51,8 +51,14 @@ export default function Login({ setUser }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button type="submit" className="w-full">Sign In</Button>
+        <Button type="submit" className="w-full">Login</Button>
       </form>
+      <p className="mt-8 text-center text-slate-500 text-sm">
+        Dont have an account?{" "}
+        <Link to="/register" className="text-indigo-400 hover:underline">
+          Register here
+        </Link>
+      </p>
     </div>
   );
 }
