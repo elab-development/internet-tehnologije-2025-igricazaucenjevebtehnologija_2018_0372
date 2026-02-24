@@ -44,8 +44,8 @@ const challenges = pgTable("challenges", {
 //SUBMISION
 const submissions = pgTable("submissions", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id).notNull(),
-  challengeId: integer("challenge_id").references(() => challenges.id).notNull(),
+  userId: integer("user_id").references(() => users.id),
+  challengeId: integer("challenge_id").references(() => challenges.id),
   isCorrect: boolean("is_correct").default(false),
   submittedAt: timestamp("submitted_at").defaultNow(),
 });
