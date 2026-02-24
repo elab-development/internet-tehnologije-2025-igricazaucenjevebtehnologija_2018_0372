@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../api";
 import Button from "../components/Button";
+import { useAuth } from "../context/AuthContext";
 
-export default function Login({ setUser }) {
+export default function Login() {
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -16,14 +18,8 @@ export default function Login({ setUser }) {
     try {
       const data = await loginUser(email, password);
 
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-
-      setUser(data.user);
-
-
+      login(data.token);
+      
       navigate("/challenges");
     } catch (err) {
       setError(err.message);

@@ -1,14 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-export default function Navbar({ user, setUser }) {
-  const navigate = useNavigate();
+export default function Navbar() {
+  const {user, logout} = useAuth();
 
-  const logout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token")
-    setUser(null);
-    navigate("/");
-  };
 
   return (
     <nav className="flex justify-between items-center p-6 bg-white border-b border-slate-200">
