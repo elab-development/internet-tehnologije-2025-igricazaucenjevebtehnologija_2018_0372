@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function Card({ challenge }) {
+export default function Card({ challenge, isSolved }) {
   return (
     <div className="bg-white border border-slate-200 p-5 rounded-xl shadow-sm hover:shadow-md transition">
       <div className="flex justify-between items-start mb-3">
@@ -8,6 +8,9 @@ export default function Card({ challenge }) {
         <span className="text-xs font-bold uppercase px-2 py-1 bg-amber-100 text-amber-700 rounded">
           {challenge.difficulty}
         </span>
+        {isSolved && (
+          <span className="text-green-500 text-[10px] font-bold animate-pulse">[COMPLEATED]</span>
+        )}
       </div>
       <p className="text-slate-600 text-sm mb-4">{challenge.description}</p>
       <div className="bg-slate-900 rounded-lg p-3 mb-4">

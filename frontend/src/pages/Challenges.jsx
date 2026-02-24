@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
 import Card from "../components/Card";
-import { Link } from "react-router-dom";
-import { fetchChallenges } from "../api";
-//challenge
+import { fetchChallenges, fetchSolvedChallengeIds } from "../api";
+
 export default function Challenges() {
   const [challenges, setChallenges] = useState([]);
+  const [solvedChallenges, setSolvedChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  //const [error, setError] = useState(null);
 
   const loadChallenges = async () => {
     setLoading(true);
-    const data = await fetchChallenges();
+    const allChallenges = await fetchChallenges();
+    const solved = await fetchSolvedChallengeIds();
 
-    setChallenges(data);
+    setChallenges(allChallenges);
+    setSolvedChallenges(solved);
   }
   useEffect(() => {
    loadChallenges();
@@ -26,14 +28,8 @@ export default function Challenges() {
       <h2 className="text-3xl font-black mb-8 underline decoration-indigo-500">Bug Gallery</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {challenges.map(c => <Card key={c.id} challenge={c} />)}
+        {challenges.map(c => <Card key={c.id} challenge={c} isSolved={solvedChallenges.includes(c.id)}/>)}
       </div>
-      {/* <Link
-        to={`/solve/${challenge.id}`}
-        className="block w-full text-center py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded transition-colors uppercase"
-      >
-        Initialize_Patch
-      </Link> */}
     </div>
   )
 };
