@@ -24,6 +24,8 @@ export default function Solve() {
             const res = await submit(id, userCode);
             if (res.isCorrect){
                 alert(res.message);
+            }else{
+                alert(res.message);
             }
         }
         catch(err){
